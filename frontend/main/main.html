@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>게임장 예약</title>
+
+    <link rel="stylesheet" href="main.css">
+</head>
+
+<body>
+
+<div class="reservation-page">
+
+    <!-- 게임장 내부 -->
+    <main class="game-floor">
+
+        <!-- maimai 9 ~ 1 -->
+        <div class="maimai-row">
+
+            <button class="game-button available">
+                maimai DX 9번
+            </button>
+
+            <button class="game-button broadcast">
+                maimai DX 6번
+            </button>
+
+            <button class="game-button available">
+                maimai DX 5번
+            </button>
+
+            <button class="game-button broadcast">
+                maimai DX 4번
+            </button>
+
+            <button class="game-button broadcast">
+                maimai DX 3번
+            </button>
+
+            <button class="game-button available">
+                maimai DX 2번
+            </button>
+
+            <button class="game-button broadcast">
+                maimai DX 1번
+            </button>
+
+        </div>
+
+
+        <!-- 왼쪽 세로 maimai -->
+        <div class="left-maimai">
+
+            <button class="game-button broadcast vertical">
+                maimai DX 7번
+            </button>
+
+            <button class="game-button broadcast vertical">
+                maimai DX 8번
+            </button>
+
+        </div>
+
+
+        <!-- 입구 -->
+        <div class="entrance"></div>
+
+
+        <!-- Taiko -->
+        <div class="taiko-row">
+
+            <button class="game-button broadcast">
+                Taiko 1번
+            </button>
+
+            <button class="game-button available">
+                Taiko 2번
+            </button>
+
+            <button class="game-button available">
+                Taiko 3번
+            </button>
+
+        </div>
+
+
+        <!-- CHUNITHM -->
+        <div class="chunithm-row">
+
+            <button class="game-button broadcast">
+                CHUNITHM 4번
+            </button>
+
+            <button class="game-button available">
+                CHUNITHM 3번
+            </button>
+
+            <button class="game-button available">
+                CHUNITHM 2번
+            </button>
+
+            <button class="game-button broadcast">
+                CHUNITHM 1번
+            </button>
+
+        </div>
+
+    </main>
+
+
+    <!-- 하단 컨트롤 영역 -->
+    <footer class="bottom-bar">
+
+        <!-- 날짜 / 시간 -->
+        <label class="datetime-box">
+
+            <input
+                type="datetime-local"
+                value="2025-10-10T10:00"
+            >
+
+            <span class="datetime-text">
+                2025-10-10 10:00~13:00
+            </span>
+
+        </label>
+
+
+        <!-- 층 버튼 -->
+        <button class="floor-button">
+            2층
+        </button>
+
+        <button class="floor-button selected">
+            3층
+        </button>
+
+
+        <!-- 범례 -->
+        <div class="legend">
+
+            <div class="legend-item">
+                <span class="legend-color broadcast"></span>
+                <span>방송 기체</span>
+            </div>
+
+            <div class="legend-item">
+                <span class="legend-color entrance-color"></span>
+                <span>입구</span>
+            </div>
+
+            <div class="legend-item">
+                <span class="legend-color available"></span>
+                <span>예약 가능</span>
+            </div>
+
+            <div class="legend-item">
+                <span class="legend-color reserved"></span>
+                <span>이미 예약됨</span>
+            </div>
+
+            <div class="legend-item">
+                <span class="legend-color selected-time"></span>
+                <span>선택시간중 이미 예약이 있음</span>
+            </div>
+
+            <div class="legend-item">
+                <span class="legend-color unavailable"></span>
+                <span>예약 불가 날짜및 시간</span>
+            </div>
+
+        </div>
+
+
+        <!-- 취소 / 뒤로가기 -->
+        <button class="back-button">
+            취소 / 뒤로가기
+        </button>
+
+    </footer>
+
+</div>
+
+</body>
+</html>

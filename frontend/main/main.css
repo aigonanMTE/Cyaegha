@@ -1,0 +1,520 @@
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+
+    font-family:
+        Arial,
+        "Noto Sans KR",
+        sans-serif;
+}
+
+body {
+    background: #202b3b;
+}
+
+
+/* =========================================
+   전체
+========================================= */
+
+.reservation-page {
+    width: 100vw;
+    height: 100vh;
+
+    min-width: 1100px;
+    min-height: 650px;
+
+    display: flex;
+    flex-direction: column;
+
+    background: #202b3b;
+}
+
+
+/* =========================================
+   게임장 영역
+========================================= */
+
+.game-floor {
+    position: relative;
+
+    flex: 1;
+
+    width: 100%;
+    min-height: 0;
+
+    border-bottom: 1px solid #657184;
+}
+
+
+/* =========================================
+   공통 게임 버튼
+========================================= */
+
+.game-button {
+    border: none;
+
+    background: #f0f3f7;
+
+    color: #080808;
+
+    font-size: clamp(14px, 1.3vw, 22px);
+    font-weight: 700;
+
+    border-radius: 9px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    cursor: default;
+
+    /*
+     * 클릭 효과 제거
+     */
+    transition: none;
+
+    /*
+     * 마우스 클릭 시에도 색깔 등이 변하지 않도록
+     */
+    outline: none;
+}
+
+.game-button:hover,
+.game-button:active,
+.game-button:focus {
+    background: #f0f3f7;
+    color: #080808;
+
+    transform: none;
+    box-shadow: none;
+}
+
+
+/* 방송 기체 */
+
+.game-button.broadcast {
+    border: 3px solid #ff6b3d;
+}
+
+
+/* 예약 가능 */
+
+.game-button.available {
+    border: 3px solid transparent;
+}
+
+
+/* =========================================
+   maimai 상단
+========================================= */
+
+.maimai-row {
+    position: absolute;
+
+    left: 12.5%;
+    right: 1%;
+
+    top: 3%;
+
+    height: 15.5%;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(7, 1fr);
+
+    gap: 0.8%;
+}
+
+
+/* =========================================
+   왼쪽 maimai
+========================================= */
+
+.left-maimai {
+    position: absolute;
+
+    left: 2%;
+    top: 18.5%;
+
+    width: 8%;
+
+    height: 44%;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 1%;
+}
+
+.left-maimai .game-button {
+    width: 100%;
+    height: 50%;
+}
+
+
+/*
+ * 세로 텍스트
+ */
+
+.vertical {
+    writing-mode: vertical-rl;
+
+    text-orientation: mixed;
+
+    font-size: clamp(14px, 1.25vw, 21px);
+}
+
+
+/* =========================================
+   입구
+========================================= */
+
+.entrance {
+    position: absolute;
+
+    right: 1.4%;
+
+    top: 58%;
+
+    width: 1.3%;
+    height: 20%;
+
+    min-width: 18px;
+
+    background: #00f02f;
+
+    border-radius: 10px;
+}
+
+
+/* =========================================
+   Taiko
+========================================= */
+
+.taiko-row {
+    position: absolute;
+
+    left: 4.8%;
+
+    bottom: 1.8%;
+
+    width: 32%;
+
+    height: 16%;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 3%;
+}
+
+
+/* =========================================
+   CHUNITHM
+========================================= */
+
+.chunithm-row {
+    position: absolute;
+
+    right: 3.5%;
+
+    bottom: 1.8%;
+
+    width: 43%;
+
+    height: 16%;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 2%;
+}
+
+.chunithm-row .game-button {
+    font-size: clamp(11px, 1.15vw, 19px);
+}
+
+
+/* =========================================
+   하단 바
+========================================= */
+
+.bottom-bar {
+    width: 100%;
+
+    height: 9.4vh;
+
+    min-height: 70px;
+    max-height: 100px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 1%;
+
+    padding: 0.8% 1%;
+
+    background: #202b3b;
+}
+
+
+/* =========================================
+   날짜 선택
+========================================= */
+
+.datetime-box {
+    position: relative;
+
+    width: 19.5%;
+    height: 48px;
+
+    flex-shrink: 0;
+
+    border: 1px solid #77859a;
+
+    border-radius: 7px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #9aa8bc;
+
+    cursor: pointer;
+
+    overflow: hidden;
+}
+
+.datetime-box input {
+    position: absolute;
+
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    opacity: 0;
+
+    cursor: pointer;
+}
+
+.datetime-text {
+    pointer-events: none;
+
+    font-size: clamp(13px, 1.05vw, 18px);
+    font-weight: 700;
+}
+
+
+/* =========================================
+   층 버튼
+========================================= */
+
+.floor-button {
+    width: 42px;
+    height: 42px;
+
+    flex-shrink: 0;
+
+    border: 1px solid #77859a;
+
+    border-radius: 7px;
+
+    background: #202b3b;
+
+    color: #9aa8bc;
+
+    font-size: 15px;
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+.floor-button.selected {
+    background: #9aa8bc;
+    color: #202b3b;
+}
+
+
+/*
+ * 아직 기능이 없으므로 클릭 효과 제거
+ */
+
+.floor-button:hover,
+.floor-button:active {
+    transform: none;
+}
+
+
+/* =========================================
+   범례
+========================================= */
+
+.legend {
+    flex: 1;
+
+    min-width: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: clamp(12px, 1.2vw, 25px);
+
+    overflow: hidden;
+}
+
+.legend-item {
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    flex-shrink: 0;
+
+    color: #9aa8bc;
+
+    font-size: clamp(10px, 0.85vw, 15px);
+
+    font-weight: 700;
+
+    white-space: nowrap;
+}
+
+.legend-color {
+    width: 37px;
+    height: 37px;
+
+    flex-shrink: 0;
+
+    border-radius: 7px;
+
+    display: inline-block;
+}
+
+
+/* 방송 기체 */
+
+.legend-color.broadcast {
+    background: transparent;
+
+    border: 3px solid #ff6b3d;
+}
+
+
+/* 입구 */
+
+.legend-color.entrance-color {
+    background: #00f02f;
+
+    border-radius: 6px;
+}
+
+
+/* 예약 가능 */
+
+.legend-color.available {
+    background: #f0f3f7;
+}
+
+
+/* 이미 예약됨 */
+
+.legend-color.reserved {
+    background: #f27478;
+}
+
+
+/* 선택시간 중 예약 있음 */
+
+.legend-color.selected-time {
+    background: #ee67b6;
+}
+
+
+/* 예약 불가 */
+
+.legend-color.unavailable {
+    background: #9aa8bc;
+}
+
+
+/* =========================================
+   뒤로가기
+========================================= */
+
+.back-button {
+    width: 115px;
+    height: 43px;
+
+    flex-shrink: 0;
+
+    border: 1px solid #77859a;
+
+    border-radius: 7px;
+
+    background: transparent;
+
+    color: #9aa8bc;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+.back-button:hover {
+    background: transparent;
+    color: #9aa8bc;
+}
+
+.back-button:active {
+    transform: none;
+}
+
+
+/* =========================================
+   작은 PC 화면 대응
+========================================= */
+
+@media (max-width: 1300px) {
+
+    .reservation-page {
+        min-width: 1000px;
+    }
+
+    .legend {
+        gap: 8px;
+    }
+
+    .legend-item {
+        gap: 5px;
+    }
+
+    .legend-color {
+        width: 28px;
+        height: 28px;
+    }
+
+    .back-button {
+        width: 105px;
+    }
+}
