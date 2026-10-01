@@ -162,6 +162,10 @@ body {
     border: 3px solid transparent;
 }
 
+.game-button.broadcast.available {
+    border-color: #ff6b3d;
+}
+
 .game-button.reserved {
     --button-background: var(--reserved);
 }

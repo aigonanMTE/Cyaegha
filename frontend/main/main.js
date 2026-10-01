@@ -9,3 +9,8 @@ floorButton.addEventListener('click', ()=>{
     window.location.href = '/2Floor/main.html'
 })
 
+//https://app.notion.com/p/Cyaegha-3ec9098ea1a480138c4af14e74f108b8?source=copy_link
+const aboutButton = document.getElementById('about')
+aboutButton.addEventListener('click',()=>{
+    window.location.href = '/about'
+})

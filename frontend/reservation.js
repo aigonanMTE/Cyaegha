@@ -183,24 +183,47 @@
         });
     }
 
-    function updateMaxDuration(button, hour){
+    function updateSelectedRangeLabel(button, selectedHours, durationHours){
         const durationLabel = button.querySelector('.machine-max-duration');
         if (!durationLabel) return;
 
-        if (!hour) {
+        if (selectedHours.length === 0 || selectedHours.some((hour) => !hour)) {
             durationLabel.textContent = '시간 정보 없음';
             return;
         }
 
-        if (hour.maintenance || hour.blocked_reason) {
-            durationLabel.textContent = '예약 불가';
-            return;
-        }
+        const firstHour = selectedHours[0];
+        const reservationInRange = selectedHours.some((hour) =>
+            ['RESERVED', 'TYPE_CAPACITY_FULL'].includes(hour.blocked_reason)
+        );
+        let currentAvailableRun = 0;
+        let longestAvailableRun = 0;
+        selectedHours.forEach((hour) => {
+            if (hour.available && !hour.maintenance && !hour.blocked_reason) {
+                currentAvailableRun += 1;
+                longestAvailableRun = Math.max(longestAvailableRun, currentAvailableRun);
+            } else {
+                currentAvailableRun = 0;
+            }
+        });
+        const entireRangeAvailable = firstHour.selectable
+            && selectedHours.every((hour) => hour.available && !hour.maintenance && !hour.blocked_reason);
 
-        const maxUsableHours = Number(hour.max_usable_hours);
-        durationLabel.textContent = Number.isFinite(maxUsableHours)
-            ? `최대 ${maxUsableHours}시간`
-            : '시간 정보 없음';
+        if (entireRangeAvailable) {
+            durationLabel.textContent = `선택 ${durationHours}시간 예약 가능`;
+        } else if (reservationInRange) {
+            durationLabel.textContent = longestAvailableRun >= minimumDurationHours
+                ? `예약 제외 최대 ${longestAvailableRun}시간`
+                : '연속 예약 시간 없음';
+        } else if (!firstHour.selectable && selectedHours.every((hour) =>
+            hour.available && !hour.maintenance && !hour.blocked_reason
+        )) {
+            durationLabel.textContent = '시작 시각 예약 불가';
+        } else if (longestAvailableRun >= minimumDurationHours) {
+            durationLabel.textContent = `불가 시간 제외 최대 ${longestAvailableRun}시간`;
+        } else {
+            durationLabel.textContent = '연속 예약 시간 없음';
+        }
     }
 
     function updateMachineStates(timetables, start, end){
@@ -212,7 +235,7 @@
             const machineName = button.dataset.reserveType;
             const type = machineTypeFor(machineName);
             if (!type) {
-                updateMaxDuration(button, null);
+                updateSelectedRangeLabel(button, [], 0);
                 setMachineState(button, 'unavailable');
                 return;
             }
@@ -231,7 +254,7 @@
 
             const durationHours = (end - start) / hourMilliseconds;
             const firstHour = selectedHours[0];
-            updateMaxDuration(button, firstHour);
+            updateSelectedRangeLabel(button, selectedHours, durationHours);
             if (!firstHour || selectedHours.some((hour) => !hour)) {
                 setMachineState(button, 'unavailable');
                 return;
@@ -242,10 +265,7 @@
                 ['RESERVED', 'TYPE_CAPACITY_FULL', 'CLOSED'].includes(hour.blocked_reason)
             );
             const fullyAvailable = firstHour.selectable
-                && firstHour.available
-                && firstHour.max_duration_hours >= durationHours
-                && firstHour.max_usable_hours >= durationHours
-                && selectedHours.every((hour) => hour.available)
+                && selectedHours.every((hour) => hour.available && !hour.maintenance && !hour.blocked_reason)
                 && !hasHardBlock;
 
             if (fullyAvailable) {
@@ -288,13 +308,10 @@
                         : hour.blocked_reason === 'CLOSED'
                             ? '영업 종료'
                             : '예약 불가';
-            const maxDuration = Number.isFinite(hour.max_usable_hours)
-                ? `최대 연속 ${hour.max_usable_hours}시간`
-                : '';
 
             cell.className = `reservation-hour ${state}`;
             cell.textContent = String(hour.hour);
-            cell.title = `${String(hour.hour).padStart(2, '0')}:00~${String(hour.hour + 1).padStart(2, '0')}:00 · ${stateLabel}${maxDuration ? ` · ${maxDuration}` : ''}`;
+            cell.title = `${String(hour.hour).padStart(2, '0')}:00~${String(hour.hour + 1).padStart(2, '0')}:00 · ${stateLabel}`;
             cell.setAttribute('aria-label', cell.title);
             return cell;
         });

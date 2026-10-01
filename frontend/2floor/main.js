@@ -9,3 +9,7 @@ floorButton.addEventListener('click', ()=>{
     window.location.href = '/main/main.html'
 })
 
+const aboutButton = document.getElementById('about')
+aboutButton.addEventListener('click',()=>{
+    window.location.href = '/about'
+})

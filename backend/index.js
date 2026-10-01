@@ -3,13 +3,14 @@ const path = require('path')
 require('dotenv').config({ path: path.join(__dirname, '../.env') })
 
 const app = express()
-const port = process.env.PORT
+const port = Number(process.env.PORT) || 3000
 const staticdir = path.join(__dirname, '../frontend')
+const aboutURL = process.env.ABOUTURL
 
 app.use(express.static(staticdir))
 
-app.get("/" , (res,req) =>{
-  req.redirect("/main/main.html")
+app.get("/", (req, res) => {
+  res.redirect("/main/main.html")
 })
 
 app.get("/api/reserve/date", async (req, res) => {
@@ -32,6 +33,10 @@ app.get('/api/reserve/timetable/type', async (req, res) => {
   const data = await response.json()
 
   res.json(data)
+})
+
+app.get('/about', (req, res) => {
+  res.redirect(aboutURL)
 })
 
 app.listen(port, () => {
