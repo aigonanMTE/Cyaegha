@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>싸이뮤직 대여 뷰어</title>
+
+    <link rel="stylesheet" href="main.css">
+</head>
+
+<body>
+
+<div class="reservation-page">
+
+    <!-- =========================================
+         게임장
+    ========================================== -->
+
+    <main class="game-floor">
+
+        <!-- =========================
+             SDVX
+        ========================== -->
+
+        <div class="sdvx-row">
+
+            <button class="game-button broadcast" data-reserve-type="SDVX VM_01">
+                SDVX 1번
+            </button>
+
+            <button class="game-button broadcast" data-reserve-type="SDVX VM_02">
+                SDVX 2번
+            </button>
+
+            <button class="game-button broadcast" data-reserve-type="SDVX VM_03">
+                SDVX 3번
+            </button>
+
+            <button class="game-button broadcast" data-reserve-type="SDVX VM_04">
+                SDVX 4번
+            </button>
+
+            <button class="game-button available" data-reserve-type="SDVX VM_05">
+                SDVX 5번
+            </button>
+
+            <button class="game-button available" data-reserve-type="SDVX VM_06">
+                SDVX 6번
+            </button>
+
+            <button class="game-button broadcast" data-reserve-type="SDVX VM_07">
+                SDVX 7번
+            </button>
+
+            <button class="game-button broadcast" data-reserve-type="SDVX VM_08">
+                SDVX 8번
+            </button>
+
+            <button class="game-button broadcast" data-reserve-type="SDVX VM_09">
+                SDVX 9번
+            </button>
+
+            <button class="game-button broadcast" data-reserve-type="SDVX VM_10">
+                SDVX 10번
+            </button>
+
+        </div>
+
+
+        <!-- =========================
+             왼쪽 기체
+        ========================== -->
+
+        <div class="left-machines">
+
+            <button class="game-button broadcast vertical" data-reserve-type="IIDX LM_02">
+                2번<br>IIDX LM
+            </button>
+
+            <button class="game-button broadcast vertical" data-reserve-type="IIDX LM_01">
+                1번<br>IIDX LM
+            </button>
+
+            <button class="game-button broadcast vertical" data-reserve-type="EZ2AC">
+                EZ2AC
+            </button>
+
+            <button class="game-button broadcast vertical" data-reserve-type="DDR White_01">
+                DDR 1번
+            </button>
+
+            <button class="game-button broadcast vertical" data-reserve-type="DDR White_02">
+                DDR 2번
+            </button>
+
+        </div>
+
+
+        <!-- =========================
+             중앙 IIDX / 팝픈
+        ========================== -->
+
+        <div class="center-machines">
+
+            <div class="upper-center">
+
+                <button class="game-button available" data-reserve-type="IIDX_02">
+                    IIDX 2번
+                </button>
+
+                <button class="game-button broadcast" data-reserve-type="IIDX_01">
+                    IIDX 1번
+                </button>
+
+                <button class="game-button broadcast" data-reserve-type="popn PPPM_04">
+                    팝픈 4번
+                </button>
+
+                <button class="game-button broadcast" data-reserve-type="popn PPPM_03">
+                    팝픈 3번
+                </button>
+
+                <button class="game-button broadcast" data-reserve-type="popn PPPM_02">
+                    팝픈 2번
+                </button>
+
+                <button class="game-button broadcast" data-reserve-type="popn PPPM_01">
+                    팝픈 1번
+                </button>
+
+            </div>
+
+
+            <div class="lower-center">
+
+                <button class="game-button available" data-reserve-type="jubeat_04">
+                    유비트 4번
+                </button>
+
+                <button class="game-button available" data-reserve-type="jubeat_03">
+                    유비트 3번
+                </button>
+
+                <button class="game-button available" data-reserve-type="jubeat_02">
+                    유비트 2번
+                </button>
+
+                <button class="game-button broadcast" data-reserve-type="jubeat_01">
+                    유비트 1번
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================
+             하단 게임
+        ========================== -->
+
+        <div class="bottom-machines">
+
+            <button class="game-button" data-reserve-type="REFLEC BEAT">
+                리플렉 비트
+            </button>
+
+            <button class="game-button" data-reserve-type="DM_White_01">
+                드럼매니아<br>
+                白
+            </button>
+
+            <button class="game-button" data-reserve-type="GF_White_01">
+                기타프릭스<br>
+                白
+            </button>
+
+            <button class="game-button broadcast" data-reserve-type="DM_ARENA">
+                드럼매니아<br>
+                아레나
+            </button>
+
+            <button class="game-button broadcast" data-reserve-type="GF_ARENA">
+                기타프릭스<br>
+                아레나
+            </button>
+
+        </div>
+
+
+        <!-- =========================
+             입구
+        ========================== -->
+
+        <div class="entrance"></div>
+
+    </main>
+
+
+    <!-- =========================================
+         하단 바
+    ========================================== -->
+
+    <footer class="bottom-bar">
+
+        <!-- 날짜 / 시간 -->
+        <div class="datetime-box">
+            <label class="datetime-label" for="startDateTimeInput" id="startTime">시작</label>
+            <input
+                id="startDateTimeInput"
+                type="text"
+                inputmode="numeric"
+                autocomplete="off"
+                maxlength="16"
+                placeholder="YYYY-MM-DD HH:00"
+                value="2026-10-03 10:00"
+                aria-label="시작 날짜와 시간"
+            >
+            <label class="datetime-label" for="endDateTimeInput">종료</label>
+            <input
+                id="endDateTimeInput"
+                type="text"
+                inputmode="numeric"
+                autocomplete="off"
+                maxlength="16"
+                placeholder="YYYY-MM-DD HH:00"
+                value="2026-10-03 13:00"
+                aria-label="종료 날짜와 시간"
+            >
+        </div>
+
+
+        <!-- 층 -->
+
+        <button class="floor-button selected">
+            2층
+        </button>
+
+        <button class="floor-button" id="floor-button">
+            3층
+        </button>
+
+
+        <!-- 범례 -->
+
+        <div class="legend">
+
+            <div class="legend-item">
+                <span class="legend-color broadcast"></span>
+                <span>방송 기체</span>
+            </div>
+
+            <div class="legend-item">
+                <span class="legend-color entrance-color"></span>
+                <span>입구</span>
+            </div>
+
+            <div class="legend-item">
+                <span class="legend-color available"></span>
+                <span>예약 가능</span>
+            </div>
+
+            <div class="legend-item">
+                <span class="legend-color reserved"></span>
+                <span>이미 예약됨</span>
+            </div>
+
+            <div class="legend-item">
+                <span class="legend-color selected-time"></span>
+                <span>일부 시간 예약 가능</span>
+            </div>
+
+            <div class="legend-item">
+                <span class="legend-color unavailable"></span>
+                <span>예약 불가 날짜및 시간</span>
+            </div>
+
+        </div>
+
+
+        <!-- 예약하러 가기 -->
+         <button class="reservation-button">
+            이용 약관
+        </button>
+        <button class="reservation-button" id="reservation-button">
+            예약하러 가기
+        </button>
+
+    </footer>
+
+</div>
+
+<script src="main.js"></script>
+<script src="../reservation.js"></script>
+
+</body>
+</html>

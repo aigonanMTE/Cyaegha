@@ -1,0 +1,908 @@
+/* =========================================
+   기본
+========================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+
+    margin: 0;
+    padding: 0;
+
+    overflow: hidden;
+
+    font-family:
+        Arial,
+        "Noto Sans KR",
+        sans-serif;
+}
+
+body {
+    background: #202b3b;
+}
+
+
+/* =========================================
+   전체
+========================================= */
+
+.reservation-page {
+
+    width: 100vw;
+    height: 100vh;
+
+    min-width: 1100px;
+    min-height: 650px;
+
+    display: flex;
+    flex-direction: column;
+
+    background: #202b3b;
+}
+
+
+/* =========================================
+   게임장
+========================================= */
+
+.game-floor {
+
+    position: relative;
+
+    width: 100%;
+    flex: 1;
+
+    min-height: 0;
+
+    border: 5px solid #182333;
+    border-bottom: 1px solid #657184;
+
+    background: #202b3b;
+}
+
+
+/* =========================================
+   게임 버튼 공통
+========================================= */
+
+.game-button {
+
+    border: 3px solid transparent;
+
+    border-radius: 10px;
+
+    background: var(--button-background, #f0f3f7);
+
+    color: #050505;
+
+    font-size: clamp(14px, 1.25vw, 21px);
+    font-weight: 700;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+    cursor: default;
+
+    padding: 5px;
+
+    /*
+     * 클릭 효과 없음
+     */
+    transition: none;
+
+    outline: none;
+}
+
+.game-button[data-reserve-type] {
+    cursor: pointer;
+}
+
+.game-button[data-reserve-type]:focus-visible {
+    outline: 2px solid #00f02f;
+    outline-offset: 2px;
+}
+
+.game-button.has-max-duration {
+    flex-direction: column;
+    gap: 3px;
+    padding: 4px;
+}
+
+.machine-name-label {
+    display: block;
+    max-width: 100%;
+    line-height: 1.1;
+}
+
+.game-button.vertical.has-max-duration {
+    writing-mode: horizontal-tb;
+}
+
+.machine-name-label.vertical-label {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+}
+
+.machine-max-duration {
+    display: block;
+    max-width: 100%;
+    overflow: hidden;
+    color: rgb(5 5 5 / 72%);
+    font-size: clamp(9px, 0.72vw, 12px);
+    font-weight: 600;
+    line-height: 1;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    writing-mode: horizontal-tb;
+}
+
+
+/*
+ * 게임 버튼은 마우스를 올리거나 눌러도
+ * 색상이 변하지 않음
+ */
+
+.game-button:hover,
+.game-button:active,
+.game-button:focus {
+
+    background: var(--button-background, #f0f3f7);
+
+    color: #050505;
+
+    border-color: transparent;
+
+    transform: none;
+
+    box-shadow: none;
+}
+
+
+/* 방송 기체 */
+
+.game-button.broadcast {
+
+    border-color: #ff7043;
+}
+
+
+/*
+ * broadcast 상태에서 hover/active 되어도
+ * 주황색 테두리 유지
+ */
+
+.game-button.broadcast:hover,
+.game-button.broadcast:active,
+.game-button.broadcast:focus {
+
+    border-color: #ff7043;
+
+    background: var(--button-background, #f0f3f7);
+}
+
+.game-button.available {
+    --button-background: #f0f3f7;
+}
+
+.game-button.reserved {
+    --button-background: #f27478;
+}
+
+.game-button.selected-time {
+    --button-background: #ee67b6;
+}
+
+.game-button.unavailable {
+    --button-background: #9aa8bc;
+}
+
+.reservation-details-dialog {
+    width: min(560px, calc(100vw - 32px));
+    max-height: min(80vh, 680px);
+    margin: auto;
+    padding: 0;
+    overflow: hidden;
+    border: 1px solid #77859a;
+    border-radius: 8px;
+    background: #202b3b;
+    color: #f0f3f7;
+}
+
+.reservation-details-dialog::backdrop {
+    background: rgb(8 12 18 / 72%);
+}
+
+.reservation-details-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 18px 20px 12px;
+}
+
+.reservation-details-header h2 {
+    margin: 0;
+    font-size: 19px;
+    line-height: 1.35;
+}
+
+.reservation-details-close {
+    width: 36px;
+    height: 36px;
+    flex: 0 0 auto;
+    border: 1px solid #77859a;
+    border-radius: 6px;
+    background: transparent;
+    color: #f0f3f7;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.reservation-details-summary {
+    margin: 0;
+    padding: 0 20px 14px;
+    color: #9baabd;
+    font-size: 14px;
+}
+
+.reservation-date-select {
+    max-width: calc(100% - 40px);
+    margin: 0 20px 14px;
+    padding: 7px 10px;
+    border: 1px solid #77859a;
+    border-radius: 5px;
+    background: #202b3b;
+    color: #f0f3f7;
+    font: inherit;
+}
+
+.reservation-hour-grid {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: 4px;
+    padding: 0 20px 14px;
+}
+
+.reservation-hour {
+    display: flex;
+    aspect-ratio: 1.2;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    color: #17202c;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.reservation-hour.available,
+.reservation-hour-swatch.available {
+    background: #f0f3f7;
+}
+
+.reservation-hour.reserved,
+.reservation-hour-swatch.reserved {
+    background: #f27478;
+}
+
+.reservation-hour.unavailable,
+.reservation-hour-swatch.unavailable {
+    background: #9aa8bc;
+}
+
+.reservation-hour-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    padding: 0 20px 16px;
+}
+
+.reservation-hour-legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #c4ceda;
+    font-size: 12px;
+}
+
+.reservation-hour-swatch {
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+}
+
+.reservation-details-message:empty {
+    display: none;
+}
+
+.reservation-details-message .reservation-details-empty {
+    margin: 0 20px 20px;
+    border-top: 1px solid #465365;
+}
+
+.reservation-details-list {
+    max-height: calc(80vh - 100px);
+    overflow-y: auto;
+    padding: 0 20px 20px;
+}
+
+.reservation-entry {
+    padding: 14px 0;
+    border-top: 1px solid #465365;
+}
+
+.reservation-entry-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 8px;
+}
+
+.reservation-entry-header strong {
+    color: #ee67b6;
+    font-size: 14px;
+}
+
+.reservation-entry-header span,
+.reservation-entry p {
+    color: #c4ceda;
+    font-size: 14px;
+}
+
+.reservation-entry p {
+    margin: 5px 0 0;
+    line-height: 1.5;
+}
+
+.reservation-details-empty {
+    margin: 0;
+    padding: 18px 0;
+    border-top: 1px solid #465365;
+    color: #c4ceda;
+    font-size: 14px;
+}
+
+
+/* =========================================
+   SDVX
+========================================= */
+
+.sdvx-row {
+
+    position: absolute;
+
+    top: 2.5%;
+    left: 1.5%;
+    right: 1.5%;
+
+    height: 16%;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(10, 1fr);
+
+    gap: 1.3%;
+}
+
+
+.sdvx-row .game-button {
+
+    width: 100%;
+    height: 100%;
+}
+
+
+/* =========================================
+   왼쪽 기체
+========================================= */
+
+.left-machines {
+
+    position: absolute;
+
+    left: 1.5%;
+    top: 20.5%;
+
+    width: 5.7%;
+
+    height: 79%;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: space-between;
+}
+
+
+.left-machines .game-button {
+
+    width: 100%;
+
+    height: 18%;
+
+    min-height: 80px;
+}
+
+
+/*
+ * 세로 텍스트
+ */
+
+.vertical {
+
+    writing-mode: vertical-rl;
+
+    text-orientation: mixed;
+
+    white-space: nowrap;
+}
+
+
+/* =========================================
+   중앙 기체
+========================================= */
+
+.center-machines {
+
+    position: absolute;
+
+    left: 23.5%;
+
+    top: 43%;
+
+    width: 56%;
+
+    height: 25%;
+
+}
+
+
+/* 위쪽 */
+
+.upper-center {
+
+    width: 100%;
+    height: 48%;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(6, 1fr);
+
+    gap: 2%;
+}
+
+
+.upper-center .game-button {
+
+    width: 100%;
+    height: 100%;
+}
+
+
+/* 아래쪽 */
+
+.lower-center {
+
+    width: 66.5%;
+    height: 48%;
+
+    margin-left: 16.5%;
+    margin-top: 2%;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 3%;
+}
+
+
+.lower-center .game-button {
+
+    width: 100%;
+    height: 100%;
+}
+
+
+/* =========================================
+   하단 게임
+========================================= */
+
+.bottom-machines {
+
+    position: absolute;
+
+    left: 24%;
+
+    bottom: 2.5%;
+
+    width: 48%;
+
+    height: 12%;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(5, 1fr);
+
+    gap: 3%;
+}
+
+
+.bottom-machines .game-button {
+
+    width: 100%;
+    height: 100%;
+}
+
+
+/* =========================================
+   입구
+========================================= */
+
+.entrance {
+
+    position: absolute;
+
+    right: 1.3%;
+
+    top: 57%;
+
+    width: 1.2%;
+    height: 18%;
+
+    min-width: 18px;
+
+    background: #00f02f;
+
+    border-radius: 10px;
+}
+
+
+/* =========================================
+   하단 바
+========================================= */
+
+.bottom-bar {
+
+    width: 100%;
+
+    height: 9.5vh;
+
+    min-height: 70px;
+    max-height: 100px;
+
+    padding:
+        0.7%
+        1%;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 1%;
+
+    background: #202b3b;
+}
+
+
+/* =========================================
+   날짜 / 시간
+========================================= */
+
+.datetime-box {
+
+    position: relative;
+
+    width: 25%;
+    height: 44px;
+
+    flex-shrink: 0;
+
+    border: 1px solid #77869b;
+
+    border-radius: 7px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    color: #9baabd;
+
+    cursor: text;
+
+    overflow: hidden;
+}
+
+
+.datetime-box input {
+
+    flex: 1;
+    min-width: 0;
+    height: 100%;
+    padding: 0 0 0 8px;
+    border: 0;
+    outline: none;
+    background: transparent;
+    color: #9baabd;
+    font-family: inherit;
+    font-size: clamp(11px, 0.95vw, 16px);
+    font-variant-numeric: tabular-nums;
+    cursor: text;
+}
+
+.datetime-box input::placeholder {
+    color: #77859a;
+    opacity: 1;
+}
+
+.datetime-box:focus-within {
+    border-color: #f0f3f7;
+}
+
+
+.datetime-text {
+
+    flex-shrink: 0;
+    padding: 0 8px 0 2px;
+    pointer-events: none;
+
+    font-size: clamp(12px, 1vw, 17px);
+
+    font-weight: 700;
+
+    white-space: nowrap;
+}
+
+
+/* =========================================
+   층 버튼
+========================================= */
+
+.floor-button {
+
+    width: 43px;
+    height: 43px;
+
+    flex-shrink: 0;
+
+    border: 1px solid #77869b;
+
+    border-radius: 7px;
+
+    background: #202b3b;
+
+    color: #9baabd;
+
+    font-size: 15px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+
+/*
+ * 현재 선택된 층
+ */
+
+.floor-button.selected {
+
+    background: #9baabd;
+
+    color: #202b3b;
+}
+
+
+/*
+ * 아직 기능이 없으므로 클릭 효과 없음
+ */
+
+.floor-button:hover{
+    background: #9aa8bc;
+    color: #202b3b;
+}
+.floor-button:active {
+
+    transform: none;
+}
+
+
+/* =========================================
+   범례
+========================================= */
+
+.legend {
+
+    flex: 1;
+
+    min-width: 0;
+
+    height: 100%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: clamp(10px, 1.1vw, 23px);
+
+    overflow: hidden;
+}
+
+
+.legend-item {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    flex-shrink: 0;
+
+    color: #9baabd;
+
+    font-size: clamp(9px, 0.82vw, 15px);
+
+    font-weight: 700;
+
+    white-space: nowrap;
+}
+
+
+.legend-color {
+
+    width: 37px;
+    height: 37px;
+
+    flex-shrink: 0;
+
+    border-radius: 7px;
+}
+
+
+/* 방송 기체 */
+
+.legend-color.broadcast {
+
+    background: transparent;
+
+    border: 3px solid #ff7043;
+}
+
+
+/* 입구 */
+
+.legend-color.entrance-color {
+
+    background: #00f02f;
+
+    border-radius: 6px;
+}
+
+
+/* 예약 가능 */
+
+.legend-color.available {
+
+    background: #f0f3f7;
+}
+
+
+/* 이미 예약됨 */
+
+.legend-color.reserved {
+
+    background: #f27478;
+}
+
+
+/* 선택시간 중 이미 예약 */
+
+.legend-color.selected-time {
+
+    background: #ee67b6;
+}
+
+
+/* 예약 불가 */
+
+.legend-color.unavailable {
+
+    background: #9baabd;
+}
+
+
+/* =========================================
+   예약하러 가기
+========================================= */
+
+.reservation-button {
+
+    width: 115px;
+    height: 43px;
+
+    flex-shrink: 0;
+
+    border: 1px solid #77869b;
+
+    border-radius: 7px;
+
+    background: transparent;
+
+    color: #9baabd;
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+
+.reservation-button:hover{
+    color: #000000;
+    background-color: #fdfefe;
+}
+.reservation-button:active {
+
+    background: transparent;
+
+    color: #9baabd;
+
+    transform: none;
+}
+
+
+/* =========================================
+   작은 PC 화면
+========================================= */
+
+@media (max-width: 1300px) {
+
+    .reservation-page {
+
+        min-width: 1000px;
+    }
+
+
+    .legend {
+
+        gap: 7px;
+    }
+
+
+    .legend-item {
+
+        gap: 4px;
+    }
+
+
+    .legend-color {
+
+        width: 28px;
+        height: 28px;
+    }
+
+
+    .reservation-button {
+
+        width: 105px;
+    }
+}

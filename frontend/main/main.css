@@ -1,3 +1,10 @@
+:root{
+    --unavailable : #9aa8bc; /*예약 불가능*/
+    --selected-time : #ee67b6; /* 선택시간 중 예약 있음 */
+    --reserved : #f27478; /* 이미 예약됨 */
+    --available : #f0f3f7; /* 예약 가능 */
+}
+
 * {
     box-sizing: border-box;
 }
@@ -61,7 +68,7 @@ body {
 .game-button {
     border: none;
 
-    background: #f0f3f7;
+    background: var(--button-background, var(--available));
 
     color: #080808;
 
@@ -87,10 +94,53 @@ body {
     outline: none;
 }
 
+.game-button[data-reserve-type] {
+    cursor: pointer;
+}
+
+.game-button[data-reserve-type]:focus-visible {
+    outline: 2px solid #00f02f;
+    outline-offset: 2px;
+}
+
+.game-button.has-max-duration {
+    flex-direction: column;
+    gap: 3px;
+    padding: 4px;
+}
+
+.machine-name-label {
+    display: block;
+    max-width: 100%;
+    line-height: 1.1;
+}
+
+.game-button.vertical.has-max-duration {
+    writing-mode: horizontal-tb;
+}
+
+.machine-name-label.vertical-label {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+}
+
+.machine-max-duration {
+    display: block;
+    max-width: 100%;
+    overflow: hidden;
+    color: rgb(8 8 8 / 72%);
+    font-size: clamp(9px, 0.72vw, 12px);
+    font-weight: 600;
+    line-height: 1;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    writing-mode: horizontal-tb;
+}
+
 .game-button:hover,
 .game-button:active,
 .game-button:focus {
-    background: #f0f3f7;
+    background: var(--button-background, var(--available));
     color: #080808;
 
     transform: none;
@@ -108,7 +158,20 @@ body {
 /* 예약 가능 */
 
 .game-button.available {
+    --button-background: var(--available);
     border: 3px solid transparent;
+}
+
+.game-button.reserved {
+    --button-background: var(--reserved);
+}
+
+.game-button.selected-time {
+    --button-background: var(--selected-time);
+}
+
+.game-button.unavailable {
+    --button-background: var(--unavailable);
 }
 
 
@@ -280,7 +343,7 @@ body {
 .datetime-box {
     position: relative;
 
-    width: 19.5%;
+    width: 25%;
     height: 48px;
 
     flex-shrink: 0;
@@ -295,25 +358,38 @@ body {
 
     color: #9aa8bc;
 
-    cursor: pointer;
+    cursor: text;
 
     overflow: hidden;
 }
 
 .datetime-box input {
-    position: absolute;
-
-    inset: 0;
-
-    width: 100%;
+    flex: 1;
+    min-width: 0;
     height: 100%;
+    padding: 0 0 0 8px;
+    border: 0;
+    outline: none;
+    background: transparent;
+    color: #9aa8bc;
+    font-family: inherit;
+    font-size: clamp(11px, 0.95vw, 16px);
+    font-variant-numeric: tabular-nums;
+    cursor: text;
+}
 
-    opacity: 0;
+.datetime-box input::placeholder {
+    color: #77859a;
+    opacity: 1;
+}
 
-    cursor: pointer;
+.datetime-box:focus-within {
+    border-color: #f0f3f7;
 }
 
 .datetime-text {
+    flex-shrink: 0;
+    padding: 0 8px 0 2px;
     pointer-events: none;
 
     font-size: clamp(13px, 1.05vw, 18px);
@@ -355,7 +431,10 @@ body {
  * 아직 기능이 없으므로 클릭 효과 제거
  */
 
-.floor-button:hover,
+.floor-button:hover{
+    background: #9aa8bc;
+    color: #202b3b;
+}
 .floor-button:active {
     transform: none;
 }
@@ -456,6 +535,172 @@ body {
     background: #9aa8bc;
 }
 
+.reservation-details-dialog {
+    width: min(560px, calc(100vw - 32px));
+    max-height: min(80vh, 680px);
+    margin: auto;
+    padding: 0;
+    overflow: hidden;
+    border: 1px solid #77859a;
+    border-radius: 8px;
+    background: #202b3b;
+    color: #f0f3f7;
+}
+
+.reservation-details-dialog::backdrop {
+    background: rgb(8 12 18 / 72%);
+}
+
+.reservation-details-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 18px 20px 12px;
+}
+
+.reservation-details-header h2 {
+    margin: 0;
+    font-size: 19px;
+    line-height: 1.35;
+}
+
+.reservation-details-close {
+    width: 36px;
+    height: 36px;
+    flex: 0 0 auto;
+    border: 1px solid #77859a;
+    border-radius: 6px;
+    background: transparent;
+    color: #f0f3f7;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.reservation-details-summary {
+    margin: 0;
+    padding: 0 20px 14px;
+    color: #9aa8bc;
+    font-size: 14px;
+}
+
+.reservation-date-select {
+    max-width: calc(100% - 40px);
+    margin: 0 20px 14px;
+    padding: 7px 10px;
+    border: 1px solid #77859a;
+    border-radius: 5px;
+    background: #202b3b;
+    color: #f0f3f7;
+    font: inherit;
+}
+
+.reservation-hour-grid {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: 4px;
+    padding: 0 20px 14px;
+}
+
+.reservation-hour {
+    display: flex;
+    aspect-ratio: 1.2;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    color: #17202c;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.reservation-hour.available,
+.reservation-hour-swatch.available {
+    background: #f0f3f7;
+}
+
+.reservation-hour.reserved,
+.reservation-hour-swatch.reserved {
+    background: #f27478;
+}
+
+.reservation-hour.unavailable,
+.reservation-hour-swatch.unavailable {
+    background: #9aa8bc;
+}
+
+.reservation-hour-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    padding: 0 20px 16px;
+}
+
+.reservation-hour-legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #c4ceda;
+    font-size: 12px;
+}
+
+.reservation-hour-swatch {
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+}
+
+.reservation-details-message:empty {
+    display: none;
+}
+
+.reservation-details-message .reservation-details-empty {
+    margin: 0 20px 20px;
+    border-top: 1px solid #465365;
+}
+
+.reservation-details-list {
+    max-height: calc(80vh - 100px);
+    overflow-y: auto;
+    padding: 0 20px 20px;
+}
+
+.reservation-entry {
+    padding: 14px 0;
+    border-top: 1px solid #465365;
+}
+
+.reservation-entry-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 8px;
+}
+
+.reservation-entry-header strong {
+    color: #ee67b6;
+    font-size: 14px;
+}
+
+.reservation-entry-header span,
+.reservation-entry p {
+    color: #c4ceda;
+    font-size: 14px;
+}
+
+.reservation-entry p {
+    margin: 5px 0 0;
+    line-height: 1.5;
+}
+
+.reservation-details-empty {
+    margin: 0;
+    padding: 18px 0;
+    border-top: 1px solid #465365;
+    color: #c4ceda;
+    font-size: 14px;
+}
+
 
 /* =========================================
    뒤로가기
@@ -482,13 +727,16 @@ body {
 }
 
 .back-button:hover {
-    background: transparent;
-    color: #9aa8bc;
+    /* background: transparent; */
+    color: #000000;
+    background-color: #fdfefe;
 }
 
 .back-button:active {
     transform: none;
 }
+
+
 
 
 /* =========================================
